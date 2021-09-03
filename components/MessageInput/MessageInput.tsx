@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { TextInput } from 'react-native-gesture-handler'
+import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
 
 import { AntDesign, SimpleLineIcons, Entypo, FontAwesome } from '@expo/vector-icons'
 
@@ -8,22 +7,35 @@ const BLUE = "#3777f0";
 const BUTTON_HEIGHT = 45;
 
 const MessageInput = () => {
+
+    const [message, setMessage] = useState('');
+
+    const onPress = () => {
+        console.log('Im Impressed!');
+
+    }
+
     return (
         <View style={styles.root}>
             <View style={styles.inputContainer}>
                 <SimpleLineIcons name="emotsmile" size={24} color="#595959" />
                 <TextInput
                     style={styles.input}
-                    placeholder="Type a message"
+                    placeholder="Type a message..."
+                    value={message}
+                    onChangeText={setMessage}
                 />
                 <Entypo name="camera" size={24} color="#595959" style={styles.icon} />
                 <FontAwesome name="microphone" size={22} color="#595959" style={styles.icon} />
             </View>
-            <View style={styles.buttonContainer}>
-                <Text style={styles.buttonText}>
-                    <AntDesign name="plus" size={24} />
-                </Text>
-            </View>
+            <Pressable onPress={onPress} style={styles.buttonContainer}>
+                {
+                    message ?
+                        <FontAwesome name="send" size={20} color="white" style={styles.icon} />
+                        :
+                        <AntDesign name="plus" size={24} color="white" />
+                }
+            </Pressable>
         </View>
     )
 }
