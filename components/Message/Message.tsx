@@ -11,14 +11,7 @@ const Message = ({ message }) => {
     const isCurrentUser = message.user.id === currentUserID;
 
     return (
-        <View style={[
-            styles.container,
-            {
-                backgroundColor: isCurrentUser ? GREY : BLUE,
-                marginLeft: isCurrentUser ? 'auto' : 10,
-                marginRight: isCurrentUser ? 10 : 'auto',
-            }
-        ]}>
+        <View style={[styles.container, isCurrentUser ? styles.currentUserStyles : styles.GuestUserStyles]}>
             <Text style={{ color: isCurrentUser ? 'black' : 'white' }}>{message.content}</Text>
         </View>
     )
@@ -28,10 +21,19 @@ export default Message
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#3777f0',
         padding: 10,
         margin: 10,
         borderRadius: 10,
         maxWidth: '75%',
     },
+    currentUserStyles: {
+        backgroundColor: GREY,
+        marginLeft: 'auto',
+        marginRight: 10,
+    },
+    GuestUserStyles: {
+        backgroundColor: BLUE,
+        marginLeft: 10,
+        marginRight: 'auto',
+    }
 })
