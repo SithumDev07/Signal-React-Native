@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
 
 import { AntDesign, SimpleLineIcons, Entypo, FontAwesome } from '@expo/vector-icons'
 
@@ -10,13 +10,30 @@ const MessageInput = () => {
 
     const [message, setMessage] = useState('');
 
+    const sendMessage = () => {
+        console.log('Sending ', message);
+        setMessage('');
+    };
+
+    const onPlusClicked = () => {
+        console.log('Get an attachment');
+    };
+
     const onPress = () => {
-        console.log('Im Impressed!');
+        if (message) {
+            sendMessage();
+        } else {
+            onPlusClicked();
+        }
 
     }
 
     return (
-        <View style={styles.root}>
+        <KeyboardAvoidingView
+            style={styles.root}
+            behavior={Platform.OS === 'ios' ? "padding" : "height"}
+            keyboardVerticalOffset={70}
+        >
             <View style={styles.inputContainer}>
                 <SimpleLineIcons name="emotsmile" size={24} color="#595959" />
                 <TextInput
@@ -36,7 +53,7 @@ const MessageInput = () => {
                         <AntDesign name="plus" size={24} color="white" />
                 }
             </Pressable>
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 
