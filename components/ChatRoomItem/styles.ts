@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-const PROFILE_SIZE = 60;
+const PROFILE_SIZE = 50;
 const BADGE_SIZE = 20;
 
 const styles = StyleSheet.create({
