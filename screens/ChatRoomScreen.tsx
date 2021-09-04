@@ -64,7 +64,7 @@ export default function ChatRoomScreen() {
                 renderItem={({ item }) => <Message message={item} />}
                 inverted
             />
-            <MessageInput chatroomID={chatRoom?.id} />
+            <MessageInput chatroom={chatRoom} />
         </SafeAreaView>
     )
 }

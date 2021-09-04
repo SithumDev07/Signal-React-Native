@@ -6,23 +6,31 @@ import { AntDesign, SimpleLineIcons, Entypo, FontAwesome } from '@expo/vector-ic
 import { DataStore } from '@aws-amplify/datastore';
 import { Message } from '../../src/models';
 import Auth from '@aws-amplify/auth';
+import { ChatRoom } from '../../src/models';
 
 const BLUE = "#3777f0";
 const BUTTON_HEIGHT = 45;
 
-const MessageInput = ({ chatroomID }) => {
+const MessageInput = ({ chatroom }) => {
 
     const [message, setMessage] = useState('');
 
     const sendMessage = async () => {
         const authUser = await Auth.currentAuthenticatedUser();
-        await DataStore.save(new Message({
+        const newMessage = await DataStore.save(new Message({
             content: message,
             userID: authUser.attributes.sub,
-            chatroomID,
+            chatroomID: chatroom.id,
         }))
+        updateLastMessage(newMessage);
         setMessage('');
     };
+
+    const updateLastMessage = async (newMessage) => {
+        DataStore.save(ChatRoom.copyOf(chatroom, updatedChatRoom => {
+            updatedChatRoom.LastMessage = newMessage;
+        }))
+    }
 
     const onPlusClicked = () => {
         console.log('Get an attachment');
