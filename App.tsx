@@ -9,7 +9,7 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 
-Amplify.configure(config);
+Amplify.configure({ ...config, Analytics: { disabled: true } });
 
 function App() {
   const isLoadingComplete = useCachedResources();

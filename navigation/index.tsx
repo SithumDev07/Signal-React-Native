@@ -1,10 +1,10 @@
 
 import { Entypo, FontAwesome5 } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Image, Text, useWindowDimensions, View } from 'react-native';
+import { ColorSchemeName, Image, Text, useWindowDimensions, View, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -15,6 +15,8 @@ import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../typ
 import LinkingConfiguration from './LinkingConfiguration';
 
 import ChatRoomScreen from '../screens/ChatRoomScreen';
+
+import UsersScreen from '../screens/UsersScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -46,6 +48,13 @@ function RootNavigator() {
           headerBackTitleVisible: false,
         }}
       />
+      <Stack.Screen
+        name="UsersScreen"
+        component={UsersScreen}
+        options={{
+          title: "Contacts",
+        }}
+      />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
@@ -56,6 +65,7 @@ function RootNavigator() {
 const HomeHeader = (props) => {
 
   const { width } = useWindowDimensions();
+  const navigation = useNavigation();
 
   return (
     <View style={
@@ -71,7 +81,9 @@ const HomeHeader = (props) => {
       <Text style={{ flex: 1, textAlign: 'center', fontWeight: 'bold', fontSize: 16 }}>Home</Text>
       <View style={{ flexDirection: 'row' }}>
         <Entypo name="camera" size={24} color="#595959" style={{ marginRight: 10 }} />
-        <FontAwesome5 name="edit" size={22} color="#595959" />
+        <Pressable onPress={() => navigation.navigate('UsersScreen')}>
+          <FontAwesome5 name="edit" size={22} color="#595959" />
+        </Pressable>
       </View>
     </View>
   );
