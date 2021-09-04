@@ -1,17 +1,26 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, TextInput, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
 
-import { AntDesign, SimpleLineIcons, Entypo, FontAwesome } from '@expo/vector-icons'
+import { AntDesign, SimpleLineIcons, Entypo, FontAwesome } from '@expo/vector-icons';
+
+import { DataStore } from '@aws-amplify/datastore';
+import { Message } from '../../src/models';
+import Auth from '@aws-amplify/auth';
 
 const BLUE = "#3777f0";
 const BUTTON_HEIGHT = 45;
 
-const MessageInput = () => {
+const MessageInput = ({ chatroomID }) => {
 
     const [message, setMessage] = useState('');
 
-    const sendMessage = () => {
-        console.log('Sending ', message);
+    const sendMessage = async () => {
+        const authUser = await Auth.currentAuthenticatedUser();
+        await DataStore.save(new Message({
+            content: message,
+            userID: authUser.attributes.sub,
+            chatroomID,
+        }))
         setMessage('');
     };
 
