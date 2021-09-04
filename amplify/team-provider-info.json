@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "SignalClone": {}
+      },
+      "function": {
+        "SignalClonePostConfirmation": {
+          "deploymentBucketName": "amplify-signalclone-staging-183135-deployment",
+          "s3Key": "amplify-builds/SignalClonePostConfirmation-2b756a346c45782f3934-build.zip"
+        }
       }
     }
   }
