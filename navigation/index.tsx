@@ -73,8 +73,8 @@ const HomeHeader = (props) => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width,
-        paddingHorizontal: 10
+        width: width - 30,
+        // paddingHorizontal: 10
       }
     }>
       <Image source={{ uri: 'https://images.unsplash.com/photo-1630305090270-408e312c5468?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80' }} style={{ width: PROFILE_IMAGE_SIZE, height: PROFILE_IMAGE_SIZE, borderRadius: PROFILE_IMAGE_SIZE }} />

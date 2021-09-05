@@ -3,7 +3,7 @@ import { ActivityIndicator, StyleSheet } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/core'
 import Message from '../components/Message'
 
-import { DataStore } from '@aws-amplify/datastore';
+import { DataStore, SortDirection } from '@aws-amplify/datastore';
 
 // * Models
 import { Message as MessageModel } from '../src/models';
@@ -47,7 +47,12 @@ export default function ChatRoomScreen() {
         if (!chatRoom) {
             return;
         }
-        const fetchedMessages = await DataStore.query(MessageModel, message => message.chatroomID("eq", chatRoom?.id));
+        const fetchedMessages = await DataStore.query(MessageModel,
+            message => message.chatroomID("eq", chatRoom?.id),
+            {
+                sort: message => message.createdAt(SortDirection.DESCENDING)
+            }
+        );
         setMessages(fetchedMessages);
     }
 
