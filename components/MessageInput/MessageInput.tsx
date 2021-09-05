@@ -7,6 +7,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { Message } from '../../src/models';
 import Auth from '@aws-amplify/auth';
 import { ChatRoom } from '../../src/models';
+import EmojiSelector from 'react-native-emoji-selector';
 
 const BLUE = "#3777f0";
 const BUTTON_HEIGHT = 45;
@@ -14,6 +15,7 @@ const BUTTON_HEIGHT = 45;
 const MessageInput = ({ chatroom }) => {
 
     const [message, setMessage] = useState('');
+    const [isEmojiPickerOpened, setIsEmojiPickerOpened] = useState<boolean>(false);
 
     const sendMessage = async () => {
         const authUser = await Auth.currentAuthenticatedUser();
@@ -24,6 +26,7 @@ const MessageInput = ({ chatroom }) => {
         }))
         updateLastMessage(newMessage);
         setMessage('');
+        setIsEmojiPickerOpened(false);
     };
 
     const updateLastMessage = async (newMessage) => {
@@ -47,29 +50,39 @@ const MessageInput = ({ chatroom }) => {
 
     return (
         <KeyboardAvoidingView
-            style={styles.root}
+            style={[styles.root, { height: isEmojiPickerOpened ? "50%" : "auto" }]}
             behavior={Platform.OS === 'ios' ? "padding" : "height"}
             keyboardVerticalOffset={70}
         >
-            <View style={styles.inputContainer}>
-                <SimpleLineIcons name="emotsmile" size={24} color="#595959" />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Type a message..."
-                    value={message}
-                    onChangeText={setMessage}
-                />
-                <Entypo name="camera" size={24} color="#595959" style={styles.icon} />
-                <FontAwesome name="microphone" size={22} color="#595959" style={styles.icon} />
+            <View style={styles.row}>
+                <View style={styles.inputContainer}>
+                    <Pressable onPress={() => setIsEmojiPickerOpened((currentValue) => !currentValue)}>
+                        <SimpleLineIcons name="emotsmile" size={24} color="#595959" />
+                    </Pressable>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Type a message..."
+                        value={message}
+                        onChangeText={setMessage}
+                    />
+                    <Entypo name="camera" size={24} color="#595959" style={styles.icon} />
+                    <FontAwesome name="microphone" size={22} color="#595959" style={styles.icon} />
+                </View>
+                <Pressable onPress={onPress} style={styles.buttonContainer}>
+                    {
+                        message ?
+                            <FontAwesome name="send" size={20} color="white" style={styles.icon} />
+                            :
+                            <AntDesign name="plus" size={24} color="white" />
+                    }
+                </Pressable>
             </View>
-            <Pressable onPress={onPress} style={styles.buttonContainer}>
-                {
-                    message ?
-                        <FontAwesome name="send" size={20} color="white" style={styles.icon} />
-                        :
-                        <AntDesign name="plus" size={24} color="white" />
-                }
-            </Pressable>
+            {isEmojiPickerOpened && (
+                <EmojiSelector
+                    onEmojiSelected={(emoji) => setMessage(currentMessage => currentMessage + emoji)}
+                    columns={8}
+                />
+            )}
         </KeyboardAvoidingView>
     )
 }
@@ -78,8 +91,10 @@ export default MessageInput
 
 const styles = StyleSheet.create({
     root: {
-        flexDirection: 'row',
         padding: 10,
+    },
+    row: {
+        flexDirection: 'row',
     },
     buttonContainer: {
         width: BUTTON_HEIGHT,
