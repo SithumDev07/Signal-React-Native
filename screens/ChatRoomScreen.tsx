@@ -29,6 +29,16 @@ export default function ChatRoomScreen() {
         fetchMessages();
     }, [chatRoom]);
 
+    useEffect(() => {
+        const subscription = DataStore.observe(MessageModel).subscribe(message => {
+            console.log(message.model, message.opType, message.element);
+            if (message.model === MessageModel && message.opType === 'INSERT') {
+                setMessages(exisitingMessage => [message.element, ...exisitingMessage]);
+            }
+        });
+        return () => subscription.unsubscribe();
+    }, []);
+
     const fetchChatRoom = async () => {
         if (!route.params?.id) {
             console.warn("No chatroom id provided");
