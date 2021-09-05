@@ -26,7 +26,7 @@ export default function ChatRoomItem({ chatRoom }) {
             setUser(fetchedUsers.find(user => user.id !== authUser.attributes.sub) || null);
         }
         fetchUsers();
-    }, [])
+    }, []);
 
     useEffect(() => {
         if (!chatRoom.chatRoomLastMessageId) {

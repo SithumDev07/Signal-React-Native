@@ -66,7 +66,6 @@ export default function ChatRoomScreen() {
         setMessages(fetchedMessages);
     }
 
-    navigation.setOptions({ title: 'Sithumm' });
 
     if (!chatRoom) {
         return <ActivityIndicator />
